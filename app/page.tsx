@@ -82,7 +82,7 @@ const Home = async () => {
 
       <footer>
         <Card>
-          <CardContent className="px-5 py-6">
+          <CardContent className="px-5 py-6 text-center">
             <p className="text-sm text-gray-400">
               © 2023 Copyright <span className="font-bold">FSW Barber</span>
             </p>
