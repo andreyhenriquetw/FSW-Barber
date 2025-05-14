@@ -89,7 +89,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       })
       setDayBookings(bookings)
     }
-    console.log("useEffect")
+
     fetch()
   }, [selectedDay, service.id])
 
