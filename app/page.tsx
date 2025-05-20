@@ -16,11 +16,7 @@ import { getConfirmedBookings } from "./_data/get-confirmed-bookings"
 const Home = async () => {
   const session = await getServerSession(authOptions)
   const barbershops = await db.barbershop.findMany({})
-  const popularBarbershops = await db.barbershop.findMany({
-    orderBy: {
-      name: "desc",
-    },
-  })
+
   const confirmedBookings = await getConfirmedBookings()
 
   return (
@@ -97,19 +93,10 @@ const Home = async () => {
         )}
 
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Recomendados
+          Faça sua reserva
         </h2>
         <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
           {barbershops.map((barbershop) => (
-            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
-          ))}
-        </div>
-
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Populares
-        </h2>
-        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
-          {popularBarbershops.map((barbershop) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
