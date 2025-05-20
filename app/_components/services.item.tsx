@@ -14,7 +14,7 @@ import {
 import { Calendar } from "./ui/calendar"
 import { ptBR } from "date-fns/locale"
 import { useEffect, useMemo, useState } from "react"
-import { isPast, isToday, set } from "date-fns"
+import { isPast, isToday, set, format } from "date-fns"
 import { createBooking } from "../_actions/create-booking"
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
@@ -63,11 +63,9 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
   return TIME_LIST.filter((time) => {
     const hour = Number(time.split(":")[0])
     const minutes = Number(time.split(":")[1])
-
     const timeIsOnThePast = isPast(set(new Date(), { hours: hour, minutes }))
-    if (timeIsOnThePast && isToday(selectedDay)) {
-      return false
-    }
+
+    if (timeIsOnThePast && isToday(selectedDay)) return false
 
     const hasBookingOnCurrentTime = bookings.some(
       (booking) =>
@@ -75,10 +73,7 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
         booking.date.getMinutes() === minutes,
     )
 
-    if (hasBookingOnCurrentTime) {
-      return false
-    }
-    return true
+    return !hasBookingOnCurrentTime
   })
 }
 
@@ -92,6 +87,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   )
   const [dayBookings, setDayBookings] = useState<Booking[]>([])
   const [bookingSheetIsOpen, setBookingSheetIsOpen] = useState(false)
+  const [whatsAppLink, setWhatsAppLink] = useState<string | null>(null)
 
   useEffect(() => {
     const fetch = async () => {
@@ -144,6 +140,28 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         serviceId: service.id,
         date: selectedDate,
       })
+
+      const formattedDate = format(selectedDate, "dd/MM/yyyy", { locale: ptBR })
+      const formattedTime = format(selectedDate, "HH:mm")
+      const formattedPrice = Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(service.price))
+
+      const clientName = data?.user?.name ?? "Cliente"
+
+      const message = `Olá, sou ${clientName} e gostaria de confirmar meu agendamento:
+
+💈- Barbearia: ${barbershop.name}
+✂️ - Serviço: ${service.name}
+📅 - Data: ${formattedDate} às ${formattedTime}
+💵 - Preço: ${formattedPrice}`
+
+      const phoneNumber = "5593999034526" // Substitua pelo número real do WhatsApp
+      const encodedMessage = encodeURIComponent(message)
+      const link = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+      setWhatsAppLink(link)
+
       handleBookingSheetOpenChange()
       toast.success("Reserva criada com sucesso!", {
         action: {
@@ -153,7 +171,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       })
     } catch (error) {
       console.error(error)
-      toast.error("Error ao criar reserva!")
+      toast.error("Erro ao criar reserva!")
     }
   }
 
@@ -169,7 +187,6 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     <>
       <Card>
         <CardContent className="flex items-center gap-3 p-3">
-          {/* IMAGE */}
           <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px]">
             <Image
               alt={service.name}
@@ -178,11 +195,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
               className="rounded-lg object-cover"
             />
           </div>
-          {/* DIREITA */}
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">{service.name}</h3>
             <p className="text-sm text-gray-400">{service.description}</p>
-            {/* PREÇO E BOTÃO */}
             <div className="flex items-center justify-between">
               <p className="text-sm font-bold text-primary">
                 {Intl.NumberFormat("pt-BR", {
@@ -219,23 +234,11 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                           width: "100%",
                           textTransform: "capitalize",
                         },
-                        cell: {
-                          width: "100%",
-                        },
-                        button: {
-                          width: "100%",
-                        },
-                        nav_button_previous: {
-                          width: "32px",
-                          height: "32px",
-                        },
-                        nav_button_next: {
-                          width: "32px",
-                          height: "32px",
-                        },
-                        caption: {
-                          textTransform: "capitalize",
-                        },
+                        cell: { width: "100%" },
+                        button: { width: "100%" },
+                        nav_button_previous: { width: "32px", height: "32px" },
+                        nav_button_next: { width: "32px", height: "32px" },
+                        caption: { textTransform: "capitalize" },
                       }}
                     />
                   </div>
@@ -295,6 +298,20 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
           <SignInDialog />
         </DialogContent>
       </Dialog>
+
+      {whatsAppLink && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <a
+            href={whatsAppLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setWhatsAppLink(null)}
+            className="rounded-full bg-green-500 px-6 py-3 text-sm text-white shadow-lg transition-all hover:bg-green-600"
+          >
+            Confirmar no WhatsApp
+          </a>
+        </div>
+      )}
     </>
   )
 }
