@@ -222,7 +222,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="border-b border-solid py-5">
+                  <div className="border-b border-solid py-0">
                     <Calendar
                       mode="single"
                       locale={ptBR}
@@ -267,7 +267,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                   )}
 
                   {selectedDate && (
-                    <div className="p-5">
+                    <div className="p-3">
                       <BookingSummary
                         barbershop={barbershop}
                         service={service}
@@ -275,7 +275,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       />
                     </div>
                   )}
-                  <SheetFooter className="mt-5 px-5">
+                  <SheetFooter className="mt-0 px-5">
                     <Button
                       onClick={handCreateBooking}
                       disabled={!selectedDay || !selectedTime}
