@@ -300,16 +300,24 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       </Dialog>
 
       {whatsAppLink && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <a
-            href={whatsAppLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setWhatsAppLink(null)}
-            className="rounded-full bg-green-500 px-6 py-3 text-sm text-white shadow-lg transition-all hover:bg-green-600"
-          >
-            Confirmar no WhatsApp
-          </a>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-[90%] max-w-md rounded-2xl border border-border bg-background p-6 text-center shadow-xl">
+            <h2 className="mb-3 text-lg font-semibold text-foreground">
+              Finalizar no WhatsApp
+            </h2>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Clique abaixo para confirmar seu agendamento pelo WhatsApp.
+            </p>
+            <a
+              href={whatsAppLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setWhatsAppLink(null)}
+              className="block w-full rounded-full bg-green-500 px-6 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-green-600"
+            >
+              Confirmar no WhatsApp
+            </a>
+          </div>
         </div>
       )}
     </>
