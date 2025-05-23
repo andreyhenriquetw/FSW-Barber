@@ -64,16 +64,6 @@ const Home = async () => {
           ))}
         </div>
 
-        {/* IMAGEM */}
-        <div className="relative mt-6 h-[150px] w-full">
-          <Image
-            alt="Agende nos melhores com AYpslon"
-            src="/banner-022.png"
-            fill
-            className="rounded-xl object-cover"
-          />
-        </div>
-
         {confirmedBookings.length > 0 && (
           <>
             <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
