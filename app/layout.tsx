@@ -8,9 +8,9 @@ import AuthProvider from "./_providers/auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Barbearia Miguel", // Altere aqui para o nome da sua barbearia
+  title: "Barbearia Brooklyn", // Altere aqui para o nome da sua barbearia
   description:
-    "Agendamentos rápidos na Barbearia Miguel – estilo em primeiro lugar!",
+    "Agendamentos rápidos na Barbearia Brooklyn – estilo em primeiro lugar!",
   icons: "/favicon.png",
 }
 

@@ -157,7 +157,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 📅 - Data: ${formattedDate} às ${formattedTime}
 💵 - Preço: ${formattedPrice}`
 
-      const phoneNumber = "5593999034526" // Substitua pelo número real do WhatsApp
+      const phoneNumber = "5594991873811" // Substitua pelo número real do WhatsApp
       const encodedMessage = encodeURIComponent(message)
       const link = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
       setWhatsAppLink(link)
